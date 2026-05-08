@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Student Study Planner</title>
+    <style>
+        :root { --p-color: #6c5ce7; --s-color: #a29bfe; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
+        .dashboard { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h1 { color: var(--p-color); text-align: center; }
+        .input-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        input, select, textarea { padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; }
+        button { background: var(--p-color); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #5b4bc4; }
+        .task-card { background: #fff; border-left: 5px solid var(--p-color); padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; }
+        .high { border-left-color: #ff7675; }
+        .low { border-left-color: #55efc4; }
+        .share-btn { background: #00b894; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <h1>🚀 Super Study Dashboard</h1>
+    
+    <!-- Profile Section -->
+    <div style="text-align: right; margin-bottom: 20px;">
+        <img src="https://placeholder.com" id="profilePic" style="border-radius: 50%;">
+        <p onclick="alert('Profile Update Feature Coming Soon!')" style="cursor:pointer; color: blue; font-size: 12px;">Update Profile</p>
+    </div>
+
+    <!-- Add Subject Section -->
+    <div class="input-group">
+        <input type="text" id="subName" placeholder="Subject Name (Unlimited)">
+        <select id="subType">
+            <option value="Assignment">Assignment</option>
+            <option value="Practice">Practice</option>
+            <option value="Test">Test</option>
+        </select>
+        <select id="priority">
+            <option value="high">High Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="low">Low Priority</option>
+        </select>
+        <input type="time" id="studyTime">
+    </div>
+    <textarea id="specialNote" style="width: 97%;" placeholder="Write your special notes here..."></textarea>
+    <button onclick="addTask()" style="width: 100%; margin-top: 10px;">Add to Planner</button>
+
+    <div id="taskList" style="margin-top: 30px;">
+        <!-- Tasks will appear here -->
+    </div>
+
+    <button class="share-btn" onclick="shareWithFriends()" style="width: 100%;">Share with Friends 🔗</button>
+</div>
+
+<script>
+    function addTask() {
+        const name = document.getElementById('subName').value;
+        const type = document.getElementById('subType').value;
+        const priority = document.getElementById('priority').value;
+        const time = document.getElementById('studyTime').value;
+        const note = document.getElementById('specialNote').value;
+
+        if(!name || !time) { alert("Please fill details"); return; }
+
+        const taskHtml = `
+            <div class="task-card ${priority}">
+                <div>
+                    <strong>${name} (${type})</strong><br>
+                    <small>⏰ ${time} | Priority: ${priority}</small><br>
+                    <p style="font-style: italic; color: #666;">Note: ${note}</p>
+                </div>
+                <button onclick="this.parentElement.remove()">Done</button>
+            </div>
+        `;
+        document.getElementById('taskList').innerHTML += taskHtml;
+        
+        // Notification Logic
+        if (Notification.permission === "granted") {
+            new Notification("Study Alert!", { body: `Time to study ${name}!`, icon: "https://placeholder.com" });
+        } else {
+            Notification.requestPermission();
+        }
+    }
+
+    function shareWithFriends() {
+        alert("Link copied! Share this with your friends to study together.");
+    }
+</script>
+
+</body>
+</html>
