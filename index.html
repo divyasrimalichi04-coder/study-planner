@@ -5,57 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ultimate Student Study Planner</title>
     <style>
-        :root { --p-color: #6c5ce7; --s-color: #a29bfe; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
-        .dashboard { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h1 { color: var(--p-color); text-align: center; }
-        .input-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        input, select, textarea { padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; }
-        button { background: var(--p-color); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #5b4bc4; }
-        .task-card { background: #fff; border-left: 5px solid var(--p-color); padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; }
-        .high { border-left-color: #ff7675; }
-        .low { border-left-color: #55efc4; }
-        .share-btn { background: #00b894; margin-top: 10px; }
+        :root { --p-color: #6c5ce7; --s-color: #00cec9; --bg: #f8f9fa; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); padding: 20px; color: #2d3436; }
+        .dashboard { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-top: 8px solid var(--p-color); }
+        h1 { text-align: center; color: var(--p-color); font-size: 24px; margin-bottom: 20px; }
+        .input-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        input, select, textarea { padding: 12px; border: 2px solid #dfe6e9; border-radius: 10px; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--p-color); }
+        button { background: var(--p-color); color: white; border: none; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; box-shadow: 0 4px 6px rgba(108, 92, 231, 0.2); }
+        .task-card { background: #fff; border-left: 6px solid var(--p-color); padding: 15px; margin-top: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; animation: fadeIn 0.5s; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .high { border-left-color: #ff7675; background: #fff5f5; }
+        .low { border-left-color: #55efc4; background: #f0fff4; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <div class="dashboard">
-    <h1>🚀 Super Study Dashboard</h1>
+    <h1>🚀 My Study Universe</h1>
     
-    <!-- Profile Section -->
-    <div style="text-align: right; margin-bottom: 20px;">
-        <img src="https://placeholder.com" id="profilePic" style="border-radius: 50%;">
-        <p onclick="alert('Profile Update Feature Coming Soon!')" style="cursor:pointer; color: blue; font-size: 12px;">Update Profile</p>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <div id="profile-area" onclick="updateProfile()" style="cursor:pointer;">
+            <img src="https://dicebear.com" style="width: 70px; border-radius: 50%; background: #eee;">
+            <p style="font-size: 12px; color: var(--p-color);">Click to Update Profile</p>
+        </div>
     </div>
 
-    <!-- Add Subject Section -->
     <div class="input-group">
-        <input type="text" id="subName" placeholder="Subject Name (Unlimited)">
+        <input type="text" id="subName" placeholder="Subject Name (Maths, Physics...)">
         <select id="subType">
-            <option value="Assignment">Assignment</option>
-            <option value="Practice">Practice</option>
-            <option value="Test">Test</option>
+            <option value="Assignment">📝 Assignment</option>
+            <option value="Practice">🏋️ Practice</option>
+            <option value="Test">✍️ Test</option>
         </select>
         <select id="priority">
-            <option value="high">High Priority</option>
-            <option value="medium">Medium Priority</option>
-            <option value="low">Low Priority</option>
+            <option value="high">🔥 High Priority</option>
+            <option value="medium">⚡ Medium Priority</option>
+            <option value="low">🌈 Low Priority</option>
         </select>
         <input type="time" id="studyTime">
+        <textarea id="specialNote" placeholder="Write a special note for this task..."></textarea>
     </div>
-    <textarea id="specialNote" style="width: 97%;" placeholder="Write your special notes here..."></textarea>
-    <button onclick="addTask()" style="width: 100%; margin-top: 10px;">Add to Planner</button>
+    
+    <button onclick="addTask()">Add to My Galaxy 🌌</button>
 
-    <div id="taskList" style="margin-top: 30px;">
-        <!-- Tasks will appear here -->
-    </div>
-
-    <button class="share-btn" onclick="shareWithFriends()" style="width: 100%;">Share with Friends 🔗</button>
+    <div id="taskList"></div>
+    
+    <button style="background: var(--s-color); margin-top: 20px;" onclick="shareApp()">Share with Friends 🔗</button>
 </div>
 
+<!-- Audio for Ringtone -->
+<audio id="alarmSound" src="https://mixkit.co"></audio>
+
 <script>
+    function updateProfile() {
+        let name = prompt("Enter your Name:");
+        if(name) alert("Welcome " + name + "! Your profile is updated.");
+    }
+
     function addTask() {
         const name = document.getElementById('subName').value;
         const type = document.getElementById('subType').value;
@@ -63,32 +70,40 @@
         const time = document.getElementById('studyTime').value;
         const note = document.getElementById('specialNote').value;
 
-        if(!name || !time) { alert("Please fill details"); return; }
+        if(!name || !time) { alert("Please enter subject and time!"); return; }
 
         const taskHtml = `
             <div class="task-card ${priority}">
                 <div>
-                    <strong>${name} (${type})</strong><br>
-                    <small>⏰ ${time} | Priority: ${priority}</small><br>
-                    <p style="font-style: italic; color: #666;">Note: ${note}</p>
+                    <strong style="color:var(--p-color)">${name}</strong> <span style="font-size:12px">(${type})</span><br>
+                    <small>⏰ ${time} | ${priority.toUpperCase()}</small>
+                    <p style="font-size:13px; color:#636e72; margin:5px 0;">Note: ${note}</p>
                 </div>
-                <button onclick="this.parentElement.remove()">Done</button>
+                <button style="width:auto; padding:5px 15px;" onclick="this.parentElement.remove()">Done</button>
             </div>
         `;
-        document.getElementById('taskList').innerHTML += taskHtml;
-        
-        // Notification Logic
+        document.getElementById('taskList').innerHTML = taskHtml + document.getElementById('taskList').innerHTML;
+
+        // Alarm Logic (Simple Demo)
+        alert("Task Added! Don't forget to study.");
+        document.getElementById('alarmSound').play(); 
+
+        // Browser Notification
         if (Notification.permission === "granted") {
-            new Notification("Study Alert!", { body: `Time to study ${name}!`, icon: "https://placeholder.com" });
+            new Notification("Study Time!", { body: `Start ${name} now!`, icon: "https://flaticon.com" });
         } else {
             Notification.requestPermission();
         }
     }
 
-    function shareWithFriends() {
-        alert("Link copied! Share this with your friends to study together.");
+    function shareApp() {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url);
+        alert("App link copied! Send it to your friends. 📲");
     }
 </script>
 
 </body>
 </html>
+
+       
